@@ -1,33 +1,6 @@
-<!DOCTYPE html>
-<html>
-    <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="description" content="">
-      <meta name="author" content="">
+ @extends('masterpage')
 
-      <title>Talentina. Direktori Talenta Indonesia</title>
-
-      <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
-      <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-      <!-- Custom CSS -->
-      <link href="{{ asset('css/freelancer.css') }}" rel="stylesheet">
-
-      <!-- Custom Fonts -->
-      <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-      <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-      <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-
-      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-      <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-      <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-      <![endif]-->
-    </head>
-    <body id="page-top" class="index">
-
+@section('content')
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
@@ -123,14 +96,14 @@
                             <div class="row control-group">
                                 <div class="form-group col-xs-12 floating-label-form-group controls">
                                     <label>Email Address</label>
-                                    <input name="email" type="email" class="form-control" placeholder="Email Address" id="email" required data-validation-required-message="Isi Email Address">
+                                    <input value="{{ Input::get('email') }}" name="email" type="email" class="form-control" placeholder="Email Address" id="email" required data-validation-required-message="Isi Email Address">
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="row control-group">
                                 <div class="form-group col-xs-12 floating-label-form-group controls">
                                     <label>Password</label>
-                                    <input name="password" type="password" class="form-control" placeholder="Password" id="password" required data-validation-required-message="Isi Password">
+                                    <input value="{{ Input::get('password') }}" name="password" type="password" class="form-control" placeholder="Password" id="password" required data-validation-required-message="Isi Password">
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
@@ -372,23 +345,4 @@
             </div>
         </div>
 
-        <!-- jQuery -->
-        <script src="{{ asset('js/jquery.js')}}"></script>
-
-        <!-- Bootstrap Core JavaScript -->
-        <script src="{{ asset('js/bootstrap.min.js')}}"></script>
-
-        <!-- Plugin JavaScript -->
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-        <script src="{{ asset('js/classie.js')}}"></script>
-        <script src="{{ asset('js/cbpAnimatedHeader.js')}}"></script>
-        <!--<script src="{{ asset('js/loginorjoin.js')}}"></script> -->
-
-        <!-- Contact Form JavaScript -->
-        <script src="{{ asset('js/jqBootstrapValidation.js')}}"></script>
-
-        <!-- Custom Theme JavaScript -->
-        <script src="{{ asset('js/freelancer.js')}}"></script>
-
-    </body>
-</html>
+@endsection

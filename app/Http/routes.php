@@ -15,10 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('loginorjoin',array (
-  'as' => 'loginorjoin',
-
-  function() {
-    return Input::all();
-  }
-));
+Route::post('loginorjoin', [
+    'as' => 'loginorjoin', 'uses' => 'TesterController@index'
+]);
