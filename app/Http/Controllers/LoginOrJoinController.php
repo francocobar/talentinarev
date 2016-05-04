@@ -9,14 +9,36 @@ use App\Http\Controllers\Controller;
 use App\User;
 class LoginOrJoinController extends Controller
 {
-    public function LoginOrJoin(Request $request)
-     {
-      $user = new User;
+    public function index(Request $request) {
+      $user = User::where('email', $request->input('email'))->first();
 
-      $user->name =  $request->input('name');
-      $user->email =  $request->input('email');
+      if(is_null($user))
+      {
+          $newUser = new User;
+          $newUser->email = $request->input('email');
+          $newUser->password = $request->input('password');
+          $newUser->save();
+          $request->session()->put('islogin', $newUser);
+          return redirect('/complete');
+      }
+      else if($user->password == $request->input('password'))
+      {
+          $request->session()->put('islogin', $user);
+          if(!$user->iscompleted) return redirect('/complete');
+          return redirect('/dashboard');
+      }
 
-      $user->save();
-      return view('welcome');
-     }
+      return view('login')->with([
+		'email' => $request->input('email'),
+		'message' => 'salah password'
+		]);
+    }
+
+    public function loginflag(Request $request) {
+      if ($request->session()->has('islogin')) {
+        if(!$user->iscompleted) return redirect('/complete');
+        else return redirect('/dashboard');
+      }
+      return redirect('/#join');
+    }
 }

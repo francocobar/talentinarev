@@ -12,11 +12,21 @@ class CreateTableUser extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('email');
-            $table->string('password');
-            $table->timestamps();
+        // Schema::create('users', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->string('email');
+        //     $table->string('password');
+        //     $table->timestamps();
+        //     $table->boolean('iscompleted', false);
+                // $table->string('name', 100);
+                // $table->string('shortdesc', 30);
+                // $table->string('about');
+                // $table->string('phone');
+                // $table->dateTime('completed_at',null);
+        //  $table->string('profilpict', 50)->default('noimage.jpg');
+
+        // });
+        Schema::table('users', function (Blueprint $table) {
         });
     }
 
@@ -27,6 +37,6 @@ class CreateTableUser extends Migration
      */
     public function down()
     {
-        Schema::drop('users');
+        //Schema::drop('users');
     }
 }

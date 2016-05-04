@@ -10,16 +10,31 @@ use App\User;
 class TesterController extends Controller
 {
     public function index(Request $request) {
-      $email = $request->input('email');
-      $message = "Anda Telah terdaftar!";
-      if($email == "franco@talenta.co")
+      $user = User::where('email', $request->input('email'))->first();
+
+      if(is_null($user))
       {
-        return redirect('/dashboard');
+          $newUser = new User;
+          $newUser->email = $request->input('email');
+          $newUser->password = $request->input('password');
+          $newUser->save();
+          $request->session()->put('islogin', $newUser);
+          return redirect('/complete');
       }
-      return view('dashboard')->with('data', $request);
+      else if($user->password == $request->input('password'))
+      {
+          $request->session()->put('islogin', $user);
+          if(!$-user->iscompleted) return redirect('/complete');
+          return redirect('/dashboard');
+      }
+
+      return "salah password";
     }
 
-    public function store() {
-      return "tes";
+    public function loginflag(Request $request) {
+      if ($request->session()->has('islogin')) {
+        if(!$-user->iscompleted) return redirect('/complete');
+      }
+      return redirect('/');
     }
 }
