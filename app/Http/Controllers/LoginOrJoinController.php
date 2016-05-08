@@ -19,16 +19,16 @@ class LoginOrJoinController extends Controller
           $newUser->password = $request->input('password');
           $newUser->save();
           $request->session()->put('islogin', $newUser);
-          return redirect('/complete');
+          return redirect('/dashboard/complete');
       }
       else if($user->password == $request->input('password'))
       {
           $request->session()->put('islogin', $user);
-          if(!$user->iscompleted) return redirect('/complete');
+          if(!$user->iscompleted) return redirect('/dashboard/complete');
           return redirect('/dashboard');
       }
 
-      return view('login')->with([
+    return view('login')->with([
 		'email' => $request->input('email'),
 		'message' => 'salah password'
 		]);
@@ -36,8 +36,11 @@ class LoginOrJoinController extends Controller
 
     public function loginflag(Request $request) {
       if ($request->session()->has('islogin')) {
-        if(!$user->iscompleted) return redirect('/complete');
-        else return redirect('/dashboard');
+
+        $user = session('islogin');
+        if(!$user->iscompleted) return redirect('/dashboard/complete');
+          return view('dashboard') ->with('user', $user);
+   
       }
       return redirect('/#join');
     }

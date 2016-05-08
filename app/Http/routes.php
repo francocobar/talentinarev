@@ -12,8 +12,6 @@ Route::post('/complete/submit', [
     'as' => 'completedata', 'uses' => 'UserDataController@submit'
 ]);
 
-Route::get('/complete', function () {
-    return view('complete');
-});
+Route::get('/dashboard/{action}', 'UserDataController@formcompleteorupdate');
 
 Route::get('/dashboard','LoginOrJoinController@loginflag');
