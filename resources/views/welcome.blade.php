@@ -1,6 +1,7 @@
  @extends('masterpage')
 
 @section('content')
+
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
@@ -18,15 +19,16 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="hidden">
-                            <a href="#page-top"></a>
-                        </li>
+                        @if(Request::session()->has('islogin'))
                         <li class="page-scroll">
-                            <a href="#about">About</a>
-                        </li>
+                                <a href="/dashboard">Dashboard</a>
+                            </li>
+                        
+                        @else
                         <li class="page-scroll">
-                            <a href="#join">Daftar</a>
+                            <a href="#join">Masuk atau Daftar</a>
                         </li>
+                        @endif
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->
@@ -39,12 +41,38 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        <h2>Favorit</h2>
+                        <h2>Latest Talent</h2>
                         <hr class="star-primary starsfive-primary">
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-4 portfolio-item">
+                <div class="row" id="containerlistuser">
+                    @foreach($allusers as $user_)
+                        <div class="col-sm-4 portfolio-item">
+                            <a href="#portfolioModal1" userid="{{$user_->id}}" class="portfolio-link" data-toggle="modal">
+                                <div class="caption">
+                                    <div class="caption-content">
+                                        <i class="fa fa-search-plus fa-3x"></i>
+                                    </div>
+                                </div>
+                                @if($user_->profilpict == "noimage.jpg")
+                                <img src="{{ asset('pictures/noimage.jpg')}}" class="img-responsive" alt="" style="height: 360px !important;">
+                                @else
+                                <img src="{{ $ofs->getpath($user_->id) }}{{$user_->profilpict}}" class="img-responsive" alt="" style="height: 360px !important;">
+                                @endif
+                            </a>
+                        </div>
+                    @endforeach
+<div class="col-sm-4 portfolio-item loadmoretemplate" style="display: none;">
+    <a href="#portfolioModal1" userid="" class="portfolio-link" data-toggle="modal">
+        <div class="caption">
+            <div class="caption-content">
+                <i class="fa fa-search-plus fa-3x"></i>
+            </div>
+        </div>
+        <img src="" class="img-responsive" alt="" style="height: 360px !important;">
+    </a>
+</div>
+                    <!-- <div class="col-sm-4 portfolio-item">
                         <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
                             <div class="caption">
                                 <div class="caption-content">
@@ -73,11 +101,17 @@
                             </div>
                             <img src="img/portfolio/circus.png" class="img-responsive" alt="">
                         </a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </section>
-
+        <section id="portfolio">
+            <div class="container">
+            <div id="morename"></div>
+                <div id="loadmore" attr-skip="6" class="btn btn-danger">LOAD MORE</div>
+            </div>
+        </section>
+    @if(!Request::session()->has('islogin'))
         <!-- Join Section -->
         <section id="join">
             <div class="container">
@@ -109,7 +143,17 @@
                             </div>
 
                             <br>
-                            <div id="success"></div>
+                            <div id="success">
+                                @if (count($errors) > 0)
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                            </div>
                             <div class="row">
                                 <div class="form-group col-xs-12">
                                     <button type="submit" class="btn btn-success btn-lg">Send</button>
@@ -120,11 +164,11 @@
                 </div>
             </div>
         </section>
-
+        @endif
         <!-- Portfolio Modals -->
         <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
+                <div class="close-modal closeeee" data-dismiss="modal">
                     <div class="lr">
                         <div class="rl">
                         </div>
@@ -134,215 +178,81 @@
                     <div class="row">
                         <div class="col-lg-8 col-lg-offset-2">
                             <div class="modal-body">
-                                <h2>Project Title</h2>
+                                <h2 style="font-size: 150%;">Project Title</h2>
                                 <hr class="star-primary">
-                                <img src="img/portfolio/cabin.png" class="img-responsive img-centered" alt="">
-                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                                <ul class="list-inline item-details">
-                                    <li>Client:
-                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                        </strong>
-                                    </li>
-                                    <li>Date:
-                                        <strong><a href="http://startbootstrap.com">April 2014</a>
-                                        </strong>
-                                    </li>
-                                    <li>Service:
-                                        <strong><a href="http://startbootstrap.com">Web Development</a>
-                                        </strong>
-                                    </li>
-                                </ul>
-                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 col-lg-offset-2">
-                            <div class="modal-body">
-                                <h2>Project Title</h2>
-                                <hr class="star-primary">
-                                <img src="img/portfolio/cake.png" class="img-responsive img-centered" alt="">
-                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                                <ul class="list-inline item-details">
-                                    <li>Client:
-                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                        </strong>
-                                    </li>
-                                    <li>Date:
-                                        <strong><a href="http://startbootstrap.com">April 2014</a>
-                                        </strong>
-                                    </li>
-                                    <li>Service:
-                                        <strong><a href="http://startbootstrap.com">Web Development</a>
-                                        </strong>
-                                    </li>
-                                </ul>
-                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 col-lg-offset-2">
-                            <div class="modal-body">
-                                <h2>Project Title</h2>
-                                <hr class="star-primary">
-                                <img src="img/portfolio/circus.png" class="img-responsive img-centered" alt="">
-                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                                <ul class="list-inline item-details">
-                                    <li>Client:
-                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                        </strong>
-                                    </li>
-                                    <li>Date:
-                                        <strong><a href="http://startbootstrap.com">April 2014</a>
-                                        </strong>
-                                    </li>
-                                    <li>Service:
-                                        <strong><a href="http://startbootstrap.com">Web Development</a>
-                                        </strong>
-                                    </li>
-                                </ul>
-                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 col-lg-offset-2">
-                            <div class="modal-body">
-                                <h2>Project Title</h2>
-                                <hr class="star-primary">
-                                <img src="img/portfolio/game.png" class="img-responsive img-centered" alt="">
-                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                                <ul class="list-inline item-details">
-                                    <li>Client:
-                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                        </strong>
-                                    </li>
-                                    <li>Date:
-                                        <strong><a href="http://startbootstrap.com">April 2014</a>
-                                        </strong>
-                                    </li>
-                                    <li>Service:
-                                        <strong><a href="http://startbootstrap.com">Web Development</a>
-                                        </strong>
-                                    </li>
-                                </ul>
-                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 col-lg-offset-2">
-                            <div class="modal-body">
-                                <h2>Project Title</h2>
-                                <hr class="star-primary">
-                                <img src="img/portfolio/safe.png" class="img-responsive img-centered" alt="">
-                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                                <ul class="list-inline item-details">
-                                    <li>Client:
-                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                        </strong>
-                                    </li>
-                                    <li>Date:
-                                        <strong><a href="http://startbootstrap.com">April 2014</a>
-                                        </strong>
-                                    </li>
-                                    <li>Service:
-                                        <strong><a href="http://startbootstrap.com">Web Development</a>
-                                        </strong>
-                                    </li>
-                                </ul>
-                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-content">
-                <div class="close-modal" data-dismiss="modal">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 col-lg-offset-2">
-                            <div class="modal-body">
-                                <h2>Project Title</h2>
-                                <hr class="star-primary">
-                                <img src="img/portfolio/submarine.png" class="img-responsive img-centered" alt="">
-                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                                <ul class="list-inline item-details">
-                                    <li>Client:
-                                        <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                        </strong>
-                                    </li>
-                                    <li>Date:
-                                        <strong><a href="http://startbootstrap.com">April 2014</a>
-                                        </strong>
-                                    </li>
-                                    <li>Service:
-                                        <strong><a href="http://startbootstrap.com">Web Development</a>
-                                        </strong>
-                                    </li>
-                                </ul>
-                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                                <img width="360" src="" class="img-responsive img-centered" alt="">
+                                <div id="descContent">
 
+                                </div>
+                                <button attr-redirect="" type="button" class="btn btn-default seeprofile"><i class="fa fa-user"></i>Lihat Profil</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+
+        <script type="text/javascript">
+
+            $(document).ready(function(){
+                $('.seeprofile').click(function() {
+                    window.location.replace($(this).attr('attr-redirect'));
+                });
+
+                $('#loadmore').click(function() {
+                    var skip = parseInt($(this).attr('attr-skip'));
+                    $(this).attr('attr-skip', parseInt($(this).attr('attr-skip'))+6);
+                    $.ajax({
+                        type: "GET",
+                        url: "/getmoreuser/" + skip,
+                        dataType: "json",
+                        success: function(listuser) {
+                            //alert("sukses");
+                            for(x in listuser)
+                            {
+                                var loadmoretemp = $('.loadmoretemplate').clone(true);
+                                $(loadmoretemp).removeClass('loadmoretemplate');
+                                $(loadmoretemp).addClass('loadmoretemplate'+listuser[x].id);
+                                $(loadmoretemp).find('a').attr('userid',listuser[x].id);
+                                $(loadmoretemp).find('img').attr('src','pictures/user'+ listuser[x].id + '/'+ listuser[x].profilpict);
+                                $(loadmoretemp).show();
+                                $('#containerlistuser').append(loadmoretemp);
+                                
+                                
+                            }
+
+                            if(listuser.length == 0 || listuser.length <6)
+                                $('#loadmore').remove();
+                        },
+                        error: function() {
+                            alert('error');
+                        }
+                    });
+                });
+
+                $('.portfolio-link').click(function() {
+                    //alert("masuk");
+                    var urlImage = $(this).find('img').attr('src');
+                    $('#portfolioModal1').find('img').attr('src',urlImage);
+                    $('#portfolioModal1').find('#descContent').html(urlImage);
+                    var dataString = "id="+ $(this).attr("user-id");
+                    $.ajax({
+                        type: "GET",
+                        url: "/getuser/" + $(this).attr('userid'),
+                        success: function(data) {
+                            $('.modal-body').find('h2').html(data.name);
+                            $('.seeprofile').attr('attr-redirect','/profile/' + data.id);
+                        }
+                    });
+                });
+
+                $('.closeeee').click(function() {
+                    $('#portfolioModal1').find('img').attr('src','');
+                    $('.modal-body').find('h2').html('');
+                    $('#portfolioModal1').find('#descContent').html('');
+                    $('.seeprofile').attr('attr-redirect','');
+                });
+            });
+           
+        </script>
 @endsection

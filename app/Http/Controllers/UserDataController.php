@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use \Input as Input;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\User;
 
 class UserDataController extends Controller
 {
@@ -47,13 +48,51 @@ class UserDataController extends Controller
       return "gagal";
     }
 
-    public function formcompleteorupdate($action) {
+    public function dashboardaction(Request $request,$action) {
+    	if (!$request->session()->has('islogin')) {
+      		return redirect('/#join');
+      	}
     	$user = session('islogin');
-    	if($action !="update" && $action != "complete") return "404";
+    	if($action !="update" && $action != "complete" && $action != "changepassword" && $action != "multipleupload" && $action != "uploadfileajax" && $action != "jsuploadformdata") return "404";
     	if($user->iscompleted && $action=="complete") 
-		 return redirect('/dashboard');
-		else if(!$user->iscompleted) 
-		 return redirect('/dashboard/complete');
+		 	return redirect('/dashboard');
+
+		 if($action == "changepassword") return view('changepassword', compact('user'));
+		 if($action == "multipleupload") return view('multipleupload', compact('user'));
+		 if($action == "uploadfileajax") return view('uploadfileajax', compact('user'));
+		 if($action == "jsuploadformdata") return view('jsuploadformdata', compact('user'));
+
     	return view('complete',compact('user','action'));
+    }
+
+	public function getuserbyid(Request $request, $userid) {
+		if($request->ajax()) {
+			$user = User::find($userid);
+			return $user; 
+		}
+	}
+    public function changepassword(Request $request) {
+    	if (!$request->session()->has('islogin')) {
+      		return redirect('/#join');
+      	}
+    	$user = session('islogin');
+    	if($request->ajax()) {
+
+	      if($user -> password != $request->input('oldPassword'))
+	      	return "password lama salah";
+	      if(trim($request->input('newPassword')) == "") 
+	      	{
+	      		return "harap isi semua form";
+			}
+	      if($request->input('newPassword') != $request->input('reNewPassword'))
+	      	return "password baru dan pengulangan gak match";
+
+			$user->password = $request->input('newPassword');
+			if($user->save()) {
+          		$request->session()->put('islogin', $user);
+				return "ganti password berhasil";
+			}
+			return "gagal ganti password";
+	    }
     }
 }

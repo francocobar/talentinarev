@@ -19,8 +19,8 @@
       <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
       <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
-      <!-- jQuery -->
-      <script src="{{ asset('js/jquery.js')}}"></script>
+       <!-- jQuery -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 
       <!-- Bootstrap Core JavaScript -->
       <script src="{{ asset('js/bootstrap.min.js')}}"></script>

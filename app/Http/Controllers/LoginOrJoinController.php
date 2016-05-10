@@ -6,10 +6,24 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Validator;
 use App\User;
 class LoginOrJoinController extends Controller
 {
     public function index(Request $request) {
+      $messages = [
+          'required' => ':attribute harus diisi',
+          'email' => 'isi email yang valid'
+      ];
+      $v = Validator::make($request->all(), [
+          'email' => 'required|email',
+          'password' => 'required',
+      ],$messages);
+      if ($v->fails()) {
+            return redirect('/#join')
+                        ->withErrors($v)
+                        ->withInput();
+        }
       $user = User::where('email', $request->input('email'))->first();
 
       if(is_null($user))
@@ -28,10 +42,10 @@ class LoginOrJoinController extends Controller
           return redirect('/dashboard');
       }
 
-    return view('login')->with([
-		'email' => $request->input('email'),
-		'message' => 'salah password'
-		]);
+      return view('login')->with([
+  		'email' => $request->input('email'),
+  		'message' => 'salah password'
+  		]);
     }
 
     public function loginflag(Request $request) {
@@ -39,8 +53,7 @@ class LoginOrJoinController extends Controller
 
         $user = session('islogin');
         if(!$user->iscompleted) return redirect('/dashboard/complete');
-          return view('dashboard') ->with('user', $user);
-   
+          return view('dashboard') ->with('user', $user);  
       }
       return redirect('/#join');
     }

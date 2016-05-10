@@ -1,5 +1,5 @@
-@extends('masterpage')
-@section('content')
+@extends('dashboard')
+@section('dashboardcontent')
 <section id="join">
     <div class="container">
         <div class="row">
@@ -56,10 +56,10 @@
                         <div class="form-group col-xs-12 floating-label-form-group controls">                           
                             <div class="col-xs-3">Foto Profil</div>
                                 <div class="col-xs-9">
-                                @if($user->profilpict =="noimage.jpg")
+                                @if($user->profilpict =="noimage.jpg" || $user->profilpict =="")
                                 <input id="profilpict" name="profilpict" type="file" required data-validation-required-message="Pilih Foto Profil Anda">
                                 @else
-                                <img width = "100px" src="{{ asset('pictures/user')}}{{$user->id}}/{{$user->profilpict}}">
+                                <img width = "100px" height="100px" src="{{ asset('pictures/user')}}{{$user->id}}/{{$user->profilpict}}">
                                 <input id="profilpict" name="profilpict" type="file" >
                                 @endif
                                 </div>
